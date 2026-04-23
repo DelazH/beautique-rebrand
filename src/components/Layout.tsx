@@ -1,97 +1,80 @@
-import { useState } from "react";
-import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
-import { ShoppingBag, Menu, X } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
+import CartDrawer from "@/components/CartDrawer";
 
-const navItems = [
-  { to: "/", label: "Home" },
-  { to: "/services", label: "Services" },
-  { to: "/shop", label: "Shop" },
-  { to: "/about", label: "About" },
-  { to: "/contact", label: "Contact" },
+const sections = [
+  { id: "home", label: "Home" },
+  { id: "services", label: "Services" },
+  { id: "shop", label: "Shop" },
+  { id: "gallery", label: "Gallery" },
+  { id: "about", label: "About" },
+  { id: "contact", label: "Contact" },
 ];
 
-const Layout = () => {
-  const [open, setOpen] = useState(false);
-  const location = useLocation();
+const scrollTo = (id: string) => {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+};
+
+const Layout = ({ children }: { children: React.ReactNode }) => {
+  const [active, setActive] = useState("home");
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActive(entry.target.id);
+        });
+      },
+      { rootMargin: "-40% 0px -55% 0px", threshold: 0 }
+    );
+    sections.forEach((s) => {
+      const el = document.getElementById(s.id);
+      if (el) observer.observe(el);
+    });
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">
       <header className="sticky top-0 z-40 backdrop-blur-md bg-background/85 border-b border-border">
-        <div className="container flex items-center justify-between py-5">
-          <Link
-            to="/"
-            className="font-serif-display text-2xl md:text-3xl tracking-wide text-foreground"
-            onClick={() => setOpen(false)}
+        <div className="container flex items-center justify-between gap-4 py-4">
+          <button
+            onClick={() => scrollTo("home")}
+            className="font-serif-display text-xl md:text-2xl tracking-wide text-foreground shrink-0"
           >
             KC Beautique
-          </Link>
+          </button>
 
-          <nav className="hidden md:flex items-center gap-8">
-            {navItems.map((item) => (
-              <NavLink
-                key={item.to}
-                to={item.to}
-                end={item.to === "/"}
-                className={({ isActive }) =>
-                  cn(
-                    "text-sm tracking-wide font-body transition-colors hover:text-gold",
-                    isActive ? "text-gold" : "text-foreground/80"
-                  )
-                }
-              >
-                {item.label}
-              </NavLink>
-            ))}
+          {/* Horizontal scrollable nav — visible on all screens */}
+          <nav className="flex-1 overflow-x-auto scrollbar-hide">
+            <ul className="flex items-center justify-end gap-5 md:gap-8 min-w-max px-1">
+              {sections.map((s) => (
+                <li key={s.id}>
+                  <button
+                    onClick={() => scrollTo(s.id)}
+                    className={cn(
+                      "text-sm tracking-wide transition-colors whitespace-nowrap hover:text-gold",
+                      active === s.id ? "text-gold" : "text-foreground/80"
+                    )}
+                  >
+                    {s.label}
+                  </button>
+                </li>
+              ))}
+            </ul>
           </nav>
 
-          <div className="flex items-center gap-4">
-            <Link
-              to="/shop"
-              aria-label="Shop"
-              className="hover:text-gold transition-colors"
-            >
-              <ShoppingBag className="h-5 w-5" />
-            </Link>
-            <button
-              aria-label="Toggle menu"
-              className="md:hidden hover:text-gold transition-colors"
-              onClick={() => setOpen((v) => !v)}
-            >
-              {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </button>
+          <div className="shrink-0">
+            <CartDrawer />
           </div>
         </div>
-
-        {open && (
-          <div className="md:hidden border-t border-border bg-background">
-            <nav className="container flex flex-col py-4">
-              {navItems.map((item) => (
-                <NavLink
-                  key={item.to}
-                  to={item.to}
-                  end={item.to === "/"}
-                  onClick={() => setOpen(false)}
-                  className={({ isActive }) =>
-                    cn(
-                      "py-3 text-base font-body border-b border-border/60 last:border-0 transition-colors",
-                      isActive ? "text-gold" : "text-foreground/90 hover:text-gold"
-                    )
-                  }
-                >
-                  {item.label}
-                </NavLink>
-              ))}
-            </nav>
-          </div>
-        )}
       </header>
 
-      <main className="flex-1" key={location.pathname}>
-        <Outlet />
-      </main>
+      <main className="flex-1">{children}</main>
 
-      <footer className="border-t border-border bg-secondary/30">
+      <footer className="border-t border-border bg-secondary/30 mt-12">
         <div className="container py-12 grid gap-10 md:grid-cols-3">
           <div>
             <p className="font-serif-display text-2xl mb-2">KC Beautique</p>
@@ -102,11 +85,14 @@ const Layout = () => {
           <div>
             <p className="font-serif-display text-lg mb-3">Quick Links</p>
             <ul className="space-y-2 text-muted-foreground">
-              {navItems.map((i) => (
-                <li key={i.to}>
-                  <Link to={i.to} className="hover:text-gold transition-colors">
-                    {i.label}
-                  </Link>
+              {sections.map((s) => (
+                <li key={s.id}>
+                  <button
+                    onClick={() => scrollTo(s.id)}
+                    className="hover:text-gold transition-colors"
+                  >
+                    {s.label}
+                  </button>
                 </li>
               ))}
             </ul>
@@ -114,12 +100,12 @@ const Layout = () => {
           <div>
             <p className="font-serif-display text-lg mb-3">Get in Touch</p>
             <p className="text-muted-foreground">South Africa</p>
-            <Link
-              to="/contact"
+            <button
+              onClick={() => scrollTo("contact")}
               className="inline-block mt-3 text-gold hover:underline"
             >
               Book an appointment →
-            </Link>
+            </button>
           </div>
         </div>
         <div className="border-t border-border py-5 text-center text-sm text-muted-foreground">
