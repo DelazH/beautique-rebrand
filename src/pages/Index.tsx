@@ -11,11 +11,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Dialog,
-  DialogContent,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { ArrowRight, Star, Mail, Phone, MapPin, Instagram, Facebook } from "lucide-react";
 import { toast } from "sonner";
 import logo from "@/assets/kc-logo.jpeg";
