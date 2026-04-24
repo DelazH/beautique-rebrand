@@ -401,6 +401,26 @@ const Index = () => {
                   </CardContent>
                 </Card>
               ))}
+
+              <Card className="border-border/60">
+                <CardContent className="p-5">
+                  <p className="text-sm text-muted-foreground mb-3">Follow us</p>
+                  <div className="flex items-center gap-3">
+                    {socialLinks.map(({ name, href, Icon }) => (
+                      <a
+                        key={name}
+                        href={href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={name}
+                        className="h-11 w-11 rounded-full bg-gold/10 flex items-center justify-center text-gold hover:bg-gold hover:text-primary-foreground transition-colors"
+                      >
+                        <Icon className="h-5 w-5" />
+                      </a>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
             </div>
           </div>
         </div>
