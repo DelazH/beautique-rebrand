@@ -11,17 +11,24 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Dialog,
-  DialogContent,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { ArrowRight, Star, Mail, Phone, MapPin, Quote } from "lucide-react";
+import { ArrowRight, Star, Mail, Phone, MapPin, Instagram, Facebook } from "lucide-react";
 import { toast } from "sonner";
 import logo from "@/assets/kc-logo.jpeg";
 import founder from "@/assets/founder-katherine.jpg";
 import salon from "@/assets/salon-interior.jpg";
-import { services, products, gallery, testimonials } from "@/data/site";
+import { services, products } from "@/data/site";
+
+const TikTokIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" {...props}>
+    <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5.8 20.1a6.34 6.34 0 0 0 10.86-4.43V8.94a8.16 8.16 0 0 0 4.77 1.52V7.01a4.85 4.85 0 0 1-1.84-.32z" />
+  </svg>
+);
+
+const socialLinks = [
+  { name: "Instagram", href: "https://www.instagram.com/kcbeautique", Icon: Instagram },
+  { name: "Facebook", href: "https://www.facebook.com/kcbeautique", Icon: Facebook },
+  { name: "TikTok", href: "https://www.tiktok.com/@kcbeautique", Icon: TikTokIcon },
+];
 import { useCart } from "@/hooks/use-cart";
 
 const values = [
@@ -216,82 +223,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* GALLERY */}
-      <section id="gallery" className="bg-secondary/40 py-16 md:py-24 scroll-mt-20">
-        <div className="container">
-          <div className="text-center max-w-2xl mx-auto mb-12">
-            <p className="text-gold tracking-[0.3em] text-sm font-medium mb-4">
-              THE LOOKBOOK
-            </p>
-            <h2 className="font-serif-display text-3xl md:text-5xl mb-5">
-              Recent Work
-            </h2>
-            <p className="text-muted-foreground text-base md:text-lg">
-              A glimpse into the artistry of our Beauticians.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
-            {gallery.map((src, i) => (
-              <Dialog key={i}>
-                <DialogTrigger asChild>
-                  <button
-                    className={`group overflow-hidden rounded-lg bg-secondary ${
-                      i === 0 ? "col-span-2 md:col-span-2 row-span-2" : ""
-                    }`}
-                  >
-                    <img
-                      src={src}
-                      alt={`KC Beautique gallery ${i + 1}`}
-                      className="w-full h-full aspect-square object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                  </button>
-                </DialogTrigger>
-                <DialogContent className="max-w-3xl p-0 overflow-hidden bg-background">
-                  <img
-                    src={src}
-                    alt={`KC Beautique gallery ${i + 1}`}
-                    className="w-full h-auto"
-                  />
-                </DialogContent>
-              </Dialog>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* TESTIMONIALS */}
-      <section className="py-16 md:py-24">
-        <div className="container">
-          <div className="text-center max-w-2xl mx-auto mb-12">
-            <p className="text-gold tracking-[0.3em] text-sm font-medium mb-4">
-              KIND WORDS
-            </p>
-            <h2 className="font-serif-display text-3xl md:text-5xl mb-5">
-              Loved by Our Clients
-            </h2>
-          </div>
-          <div className="grid md:grid-cols-3 gap-5 max-w-5xl mx-auto">
-            {testimonials.map((t) => (
-              <Card key={t.name} className="border-border/60 bg-card">
-                <CardContent className="p-7">
-                  <Quote className="h-8 w-8 text-gold/40 mb-4" />
-                  <p className="text-muted-foreground italic leading-relaxed mb-6">
-                    "{t.quote}"
-                  </p>
-                  <div className="flex items-center gap-1 text-gold mb-3">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="h-4 w-4 fill-current" />
-                    ))}
-                  </div>
-                  <p className="font-serif-display text-lg leading-tight">{t.name}</p>
-                  <p className="text-xs text-gold tracking-wide">{t.role}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* ABOUT */}
       <section id="about" className="bg-secondary/40 py-16 md:py-24 scroll-mt-20">
@@ -465,6 +396,26 @@ const Index = () => {
                   </CardContent>
                 </Card>
               ))}
+
+              <Card className="border-border/60">
+                <CardContent className="p-5">
+                  <p className="text-sm text-muted-foreground mb-3">Follow us</p>
+                  <div className="flex items-center gap-3">
+                    {socialLinks.map(({ name, href, Icon }) => (
+                      <a
+                        key={name}
+                        href={href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={name}
+                        className="h-11 w-11 rounded-full bg-gold/10 flex items-center justify-center text-gold hover:bg-gold hover:text-primary-foreground transition-colors"
+                      >
+                        <Icon className="h-5 w-5" />
+                      </a>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
             </div>
           </div>
         </div>
