@@ -13,10 +13,34 @@ import {
 } from "@/components/ui/select";
 import { ArrowRight, Star, Mail, Phone, MapPin, Instagram, Facebook } from "lucide-react";
 import { toast } from "sonner";
+import Autoplay from "embla-carousel-autoplay";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 import logo from "@/assets/kc-logo.jpeg";
 import founder from "@/assets/founder-katherine.jpg";
-import salon from "@/assets/salon-interior.jpg";
+import work1 from "@/assets/work-1.jpg";
+import work2 from "@/assets/work-2.jpg";
+import work3 from "@/assets/work-3.jpg";
+import work4 from "@/assets/work-4.jpg";
+import work5 from "@/assets/work-5.jpg";
+import work6 from "@/assets/work-6.jpg";
+import work7 from "@/assets/work-7.jpg";
 import { services, products } from "@/data/site";
+
+const workGallery = [
+  { src: work1, alt: "Black & gold nail art" },
+  { src: work2, alt: "Black & white nail art" },
+  { src: work3, alt: "Bridal makeup transformation" },
+  { src: work4, alt: "Glam makeup & locs styling" },
+  { src: work5, alt: "Sleek high ponytail" },
+  { src: work6, alt: "Stitch braids" },
+  { src: work7, alt: "Knotless braids" },
+];
 
 const TikTokIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" {...props}>
@@ -224,65 +248,97 @@ const Index = () => {
       </section>
 
 
+      {/* OUR WORK CAROUSEL */}
+      <section id="work" className="py-16 md:py-24 scroll-mt-20">
+        <div className="container">
+          <div className="text-center max-w-2xl mx-auto mb-10">
+            <p className="text-gold tracking-[0.3em] text-sm font-medium mb-4">
+              OUR WORK
+            </p>
+            <h2 className="font-serif-display text-3xl md:text-5xl mb-5">
+              A Glimpse of the Glow-Ups
+            </h2>
+            <p className="text-muted-foreground text-base md:text-lg leading-relaxed">
+              Real clients, real artistry — straight from the chair.
+            </p>
+          </div>
+
+          <Carousel
+            opts={{ align: "start", loop: true }}
+            plugins={[Autoplay({ delay: 3500, stopOnInteraction: true })]}
+            className="max-w-5xl mx-auto"
+          >
+            <CarouselContent>
+              {workGallery.map((img) => (
+                <CarouselItem
+                  key={img.src}
+                  className="basis-full sm:basis-1/2 lg:basis-1/3"
+                >
+                  <div className="aspect-[3/4] overflow-hidden rounded-lg bg-secondary shadow-md">
+                    <img
+                      src={img.src}
+                      alt={img.alt}
+                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                      loading="lazy"
+                    />
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="hidden md:flex" />
+            <CarouselNext className="hidden md:flex" />
+          </Carousel>
+        </div>
+      </section>
+
       {/* ABOUT */}
       <section id="about" className="bg-secondary/40 py-16 md:py-24 scroll-mt-20">
-        <div className="container">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="relative">
+        <div className="container max-w-4xl">
+          <div className="text-center mb-12">
+            <p className="text-gold tracking-[0.3em] text-sm font-medium mb-4">
+              OUR STORY
+            </p>
+            <h2 className="font-serif-display text-3xl md:text-5xl mb-6 leading-tight">
+              About Us
+            </h2>
+            <p className="text-muted-foreground text-base md:text-lg leading-relaxed max-w-2xl mx-auto">
+              Established in 2019, KC Beautique offers premium nail, face, and hair
+              services. With a passion for beauty and over 5 years of experience, we
+              focus on creating a calm, welcoming space where clients feel relaxed,
+              confident, and truly cared for. Our mission is to grow while consistently
+              delivering excellence and satisfaction.
+            </p>
+
+            <div className="flex items-center justify-center gap-4 mt-10">
               <img
-                src={salon}
-                alt="KC Beautique salon interior"
-                className="w-full h-auto rounded-lg shadow-lg grayscale"
+                src={founder}
+                alt="Kaylah Faaltyn, Founder"
+                className="h-16 w-16 rounded-full object-cover border-2 border-gold"
               />
-              <div className="absolute -bottom-6 -right-2 md:-right-6 bg-card p-5 md:p-6 rounded-lg shadow-xl border border-border max-w-[16rem]">
-                <h3 className="font-serif-display text-xl mb-3 text-gold">
-                  Our Values
-                </h3>
-                <ul className="space-y-2">
-                  {values.map((v) => (
-                    <li key={v} className="flex items-center gap-2 text-sm">
-                      <span className="h-1.5 w-1.5 rounded-full bg-gold shrink-0" /> {v}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-
-            <div>
-              <p className="text-gold tracking-[0.3em] text-sm font-medium mb-4">
-                OUR STORY
-              </p>
-              <h2 className="font-serif-display text-3xl md:text-5xl mb-6 leading-tight">
-                Beautifying the World One Client at a Time
-              </h2>
-              <div className="space-y-4 text-muted-foreground leading-relaxed">
-                <p>
-                  Founded with a simple vision — to create a sanctuary where beauty,
-                  wellness, and self-care converge. KC Beautique has grown from a small
-                  boutique into a premier beauty destination.
+              <div className="text-left">
+                <p className="font-serif-display text-lg">Kaylah Faaltyn</p>
+                <p className="text-sm text-gold italic">
+                  Founder & Creative Director
                 </p>
-                <p>
-                  At KC Beautique, we believe that true beauty emerges when you feel
-                  your best inside and out. Our team of skilled Beauticians is dedicated
-                  to helping you discover and enhance your natural beauty.
-                </p>
-              </div>
-
-              <div className="flex items-center gap-4 mt-10 pt-8 border-t border-border">
-                <img
-                  src={founder}
-                  alt="Kaylah Faaltyn, Founder"
-                  className="h-16 w-16 rounded-full object-cover border-2 border-gold"
-                />
-                <div>
-                  <p className="font-serif-display text-lg">Kaylah Faaltyn</p>
-                  <p className="text-sm text-gold italic">
-                    Founder & Creative Director
-                  </p>
-                </div>
               </div>
             </div>
           </div>
+
+          <Card className="border-border/60 bg-card max-w-2xl mx-auto">
+            <CardContent className="p-7 md:p-9">
+              <h3 className="font-serif-display text-2xl mb-5 text-gold text-center">
+                Our Core Values
+              </h3>
+              <ul className="grid sm:grid-cols-2 gap-3">
+                {values.map((v) => (
+                  <li key={v} className="flex items-center gap-3">
+                    <span className="h-2 w-2 rounded-full bg-gold shrink-0" />
+                    <span className="text-foreground">{v}</span>
+                  </li>
+                ))}
+              </ul>
+            </CardContent>
+          </Card>
         </div>
       </section>
 
