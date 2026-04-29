@@ -13,10 +13,34 @@ import {
 } from "@/components/ui/select";
 import { ArrowRight, Star, Mail, Phone, MapPin, Instagram, Facebook } from "lucide-react";
 import { toast } from "sonner";
+import Autoplay from "embla-carousel-autoplay";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 import logo from "@/assets/kc-logo.jpeg";
 import founder from "@/assets/founder-katherine.jpg";
-import salon from "@/assets/salon-interior.jpg";
+import work1 from "@/assets/work-1.jpg";
+import work2 from "@/assets/work-2.jpg";
+import work3 from "@/assets/work-3.jpg";
+import work4 from "@/assets/work-4.jpg";
+import work5 from "@/assets/work-5.jpg";
+import work6 from "@/assets/work-6.jpg";
+import work7 from "@/assets/work-7.jpg";
 import { services, products } from "@/data/site";
+
+const workGallery = [
+  { src: work1, alt: "Black & gold nail art" },
+  { src: work2, alt: "Black & white nail art" },
+  { src: work3, alt: "Bridal makeup transformation" },
+  { src: work4, alt: "Glam makeup & locs styling" },
+  { src: work5, alt: "Sleek high ponytail" },
+  { src: work6, alt: "Stitch braids" },
+  { src: work7, alt: "Knotless braids" },
+];
 
 const TikTokIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" {...props}>
