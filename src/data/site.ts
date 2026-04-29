@@ -26,24 +26,6 @@ export const services = [
     desc: "Treat yourself to our premium manicure and pedicure services, featuring high-quality polishes and relaxing care.",
     price: "From R250",
   },
-  {
-    icon: Brush,
-    title: "Lash Extensions",
-    desc: "Lightweight, hand-applied lash sets that frame your eyes with effortless, lasting glamour.",
-    price: "From R550",
-  },
-  {
-    icon: Eye,
-    title: "Brow Shaping",
-    desc: "Tailored brow design, tinting and lamination to perfectly suit your face shape.",
-    price: "From R180",
-  },
-  {
-    icon: Flower2,
-    title: "Facials & Skincare",
-    desc: "Restorative facials using nourishing botanicals to leave your skin radiant and refreshed.",
-    price: "From R400",
-  },
 ];
 
 export const products = [
@@ -57,11 +39,11 @@ export const products = [
     desc: "An intensive treatment oil that revitalizes the scalp, encourages growth, and leaves hair soft, strong, and radiant.",
   },
   {
-    id: "food-125",
+    id: "shea-125",
     image: productFood,
     category: "Hair Care",
-    title: "Hair Food",
-    price: 150,
+    title: "Shea Butter",
+    price: 100,
     size: "125ml",
     desc: "Shea Butter & Coconut Oil treatment to nourish and protect hair.",
   },
