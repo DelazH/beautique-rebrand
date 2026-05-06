@@ -456,7 +456,7 @@ const Index = () => {
                       size="lg"
                       className="w-full bg-gold hover:bg-gold/90 text-primary-foreground"
                     >
-                      Send Message
+                      Send via WhatsApp
                     </Button>
                   </form>
                 </CardContent>
@@ -465,9 +465,9 @@ const Index = () => {
 
             <div className="space-y-4">
               {[
-                { icon: Mail, label: "Email", value: "hello@kcbeautique.co.za" },
-                { icon: Phone, label: "Phone", value: "+27 00 000 0000" },
-                { icon: MapPin, label: "Location", value: "South Africa" },
+                { icon: Mail, label: "Email", value: "Kcbeautique10@gmail.com" },
+                { icon: Phone, label: "Phone", value: "081 595 5420" },
+                { icon: MapPin, label: "Location", value: "Randfontein, Toekomsrus" },
               ].map((item) => (
                 <Card key={item.label} className="border-border/60">
                   <CardContent className="p-5 flex items-start gap-4">
