@@ -49,9 +49,21 @@ const TikTokIcon = (props: React.SVGProps<SVGSVGElement>) => (
 );
 
 const socialLinks = [
-  { name: "Instagram", href: "https://www.instagram.com/kcbeautique", Icon: Instagram },
-  { name: "Facebook", href: "https://www.facebook.com/kcbeautique", Icon: Facebook },
-  { name: "TikTok", href: "https://www.tiktok.com/@kcbeautique", Icon: TikTokIcon },
+  { name: "Instagram", href: "https://www.instagram.com/_kc_beautique_", Icon: Instagram },
+  { name: "Facebook", href: "https://www.facebook.com/share/1ChxSdkaNs/", Icon: Facebook },
+  { name: "TikTok", href: "https://www.tiktok.com/@kc_beautique_", Icon: TikTokIcon },
+];
+
+const WHATSAPP_NUMBER = "27815955420";
+
+const hours = [
+  { day: "Monday", status: "Open" },
+  { day: "Tuesday", status: "Closed" },
+  { day: "Wednesday", status: "Open" },
+  { day: "Thursday", status: "Open" },
+  { day: "Friday", status: "Open" },
+  { day: "Saturday", status: "Open" },
+  { day: "Sunday", status: "Closed" },
 ];
 import { useCart } from "@/hooks/use-cart";
 
@@ -79,11 +91,22 @@ const Index = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.name || !form.email || !form.message) {
-      toast.error("Please fill in your name, email, and message.");
+    if (!form.name || !form.message) {
+      toast.error("Please fill in your name and message.");
       return;
     }
-    toast.success("Thank you! We'll be in touch shortly to confirm your appointment.");
+    const lines = [
+      `*New Booking Request — KC Beautique*`,
+      `Name: ${form.name}`,
+      form.email && `Email: ${form.email}`,
+      form.phone && `Phone: ${form.phone}`,
+      form.service && `Service: ${form.service}`,
+      ``,
+      form.message,
+    ].filter(Boolean);
+    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(lines.join("\n"))}`;
+    window.open(url, "_blank", "noopener,noreferrer");
+    toast.success("Opening WhatsApp to send your booking…");
     setForm({ name: "", email: "", phone: "", service: "", message: "" });
   };
 
