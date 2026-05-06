@@ -90,8 +90,10 @@ const Index = () => {
     email: "",
     phone: "",
     service: "",
+    time: "",
     message: "",
   });
+  const [date, setDate] = useState<Date | undefined>();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -105,13 +107,16 @@ const Index = () => {
       form.email && `Email: ${form.email}`,
       form.phone && `Phone: ${form.phone}`,
       form.service && `Service: ${form.service}`,
+      date && `Date: ${format(date, "EEEE, d MMMM yyyy")}`,
+      form.time && `Time: ${form.time}`,
       ``,
       form.message,
     ].filter(Boolean);
     const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(lines.join("\n"))}`;
     window.open(url, "_blank", "noopener,noreferrer");
     toast.success("Opening WhatsApp to send your booking…");
-    setForm({ name: "", email: "", phone: "", service: "", message: "" });
+    setForm({ name: "", email: "", phone: "", service: "", time: "", message: "" });
+    setDate(undefined);
   };
 
   return (
