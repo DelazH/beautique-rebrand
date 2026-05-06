@@ -287,16 +287,15 @@ const Index = () => {
           </div>
 
           <Carousel
-            opts={{ align: "start", loop: true, dragFree: true }}
+            opts={{ align: "start", loop: true, duration: 60 }}
             plugins={[
               Autoplay({
-                delay: 0,
+                delay: 2200,
                 stopOnInteraction: false,
                 stopOnMouseEnter: true,
-                playOnInit: true,
               }),
             ]}
-            className="max-w-5xl mx-auto [&_[data-embla-container]]:transition-transform [&_[data-embla-container]]:!duration-[6000ms] [&_[data-embla-container]]:!ease-linear"
+            className="max-w-5xl mx-auto"
           >
             <CarouselContent>
               {workGallery.map((img) => (
