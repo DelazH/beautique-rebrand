@@ -501,6 +501,28 @@ const Index = () => {
                   </div>
                 </CardContent>
               </Card>
+
+              <Card className="border-border/60">
+                <CardContent className="p-5">
+                  <p className="text-sm text-muted-foreground mb-3">Opening Hours</p>
+                  <ul className="space-y-1.5 text-sm">
+                    {hours.map((h) => (
+                      <li key={h.day} className="flex items-center justify-between">
+                        <span className="text-foreground">{h.day}</span>
+                        <span
+                          className={
+                            h.status === "Open"
+                              ? "text-gold font-medium"
+                              : "text-muted-foreground"
+                          }
+                        >
+                          {h.status}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
             </div>
           </div>
         </div>
