@@ -49,9 +49,21 @@ const TikTokIcon = (props: React.SVGProps<SVGSVGElement>) => (
 );
 
 const socialLinks = [
-  { name: "Instagram", href: "https://www.instagram.com/kcbeautique", Icon: Instagram },
-  { name: "Facebook", href: "https://www.facebook.com/kcbeautique", Icon: Facebook },
-  { name: "TikTok", href: "https://www.tiktok.com/@kcbeautique", Icon: TikTokIcon },
+  { name: "Instagram", href: "https://www.instagram.com/_kc_beautique_", Icon: Instagram },
+  { name: "Facebook", href: "https://www.facebook.com/share/1ChxSdkaNs/", Icon: Facebook },
+  { name: "TikTok", href: "https://www.tiktok.com/@kc_beautique_", Icon: TikTokIcon },
+];
+
+const WHATSAPP_NUMBER = "27815955420";
+
+const hours = [
+  { day: "Monday", status: "Open" },
+  { day: "Tuesday", status: "Closed" },
+  { day: "Wednesday", status: "Open" },
+  { day: "Thursday", status: "Open" },
+  { day: "Friday", status: "Open" },
+  { day: "Saturday", status: "Open" },
+  { day: "Sunday", status: "Closed" },
 ];
 import { useCart } from "@/hooks/use-cart";
 
@@ -79,11 +91,22 @@ const Index = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.name || !form.email || !form.message) {
-      toast.error("Please fill in your name, email, and message.");
+    if (!form.name || !form.message) {
+      toast.error("Please fill in your name and message.");
       return;
     }
-    toast.success("Thank you! We'll be in touch shortly to confirm your appointment.");
+    const lines = [
+      `*New Booking Request — KC Beautique*`,
+      `Name: ${form.name}`,
+      form.email && `Email: ${form.email}`,
+      form.phone && `Phone: ${form.phone}`,
+      form.service && `Service: ${form.service}`,
+      ``,
+      form.message,
+    ].filter(Boolean);
+    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(lines.join("\n"))}`;
+    window.open(url, "_blank", "noopener,noreferrer");
+    toast.success("Opening WhatsApp to send your booking…");
     setForm({ name: "", email: "", phone: "", service: "", message: "" });
   };
 
@@ -264,8 +287,14 @@ const Index = () => {
           </div>
 
           <Carousel
-            opts={{ align: "start", loop: true }}
-            plugins={[Autoplay({ delay: 3500, stopOnInteraction: true })]}
+            opts={{ align: "start", loop: true, duration: 60 }}
+            plugins={[
+              Autoplay({
+                delay: 2200,
+                stopOnInteraction: false,
+                stopOnMouseEnter: true,
+              }),
+            ]}
             className="max-w-5xl mx-auto"
           >
             <CarouselContent>
@@ -427,7 +456,7 @@ const Index = () => {
                       size="lg"
                       className="w-full bg-gold hover:bg-gold/90 text-primary-foreground"
                     >
-                      Send Message
+                      Send via WhatsApp
                     </Button>
                   </form>
                 </CardContent>
@@ -436,9 +465,9 @@ const Index = () => {
 
             <div className="space-y-4">
               {[
-                { icon: Mail, label: "Email", value: "hello@kcbeautique.co.za" },
-                { icon: Phone, label: "Phone", value: "+27 00 000 0000" },
-                { icon: MapPin, label: "Location", value: "South Africa" },
+                { icon: Mail, label: "Email", value: "Kcbeautique10@gmail.com" },
+                { icon: Phone, label: "Phone", value: "081 595 5420" },
+                { icon: MapPin, label: "Location", value: "Randfontein, Toekomsrus" },
               ].map((item) => (
                 <Card key={item.label} className="border-border/60">
                   <CardContent className="p-5 flex items-start gap-4">
@@ -470,6 +499,28 @@ const Index = () => {
                       </a>
                     ))}
                   </div>
+                </CardContent>
+              </Card>
+
+              <Card className="border-border/60">
+                <CardContent className="p-5">
+                  <p className="text-sm text-muted-foreground mb-3">Opening Hours</p>
+                  <ul className="space-y-1.5 text-sm">
+                    {hours.map((h) => (
+                      <li key={h.day} className="flex items-center justify-between">
+                        <span className="text-foreground">{h.day}</span>
+                        <span
+                          className={
+                            h.status === "Open"
+                              ? "text-gold font-medium"
+                              : "text-muted-foreground"
+                          }
+                        >
+                          {h.status}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
                 </CardContent>
               </Card>
             </div>
