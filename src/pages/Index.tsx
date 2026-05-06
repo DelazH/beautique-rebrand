@@ -1,9 +1,12 @@
 import { useState } from "react";
+import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
   Select,
   SelectContent,
@@ -11,7 +14,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ArrowRight, Star, Mail, Phone, MapPin, Instagram, Facebook } from "lucide-react";
+import { ArrowRight, Star, Mail, Phone, MapPin, Instagram, Facebook, CalendarIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import Autoplay from "embla-carousel-autoplay";
 import {
@@ -86,8 +90,10 @@ const Index = () => {
     email: "",
     phone: "",
     service: "",
+    time: "",
     message: "",
   });
+  const [date, setDate] = useState<Date | undefined>();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -101,13 +107,16 @@ const Index = () => {
       form.email && `Email: ${form.email}`,
       form.phone && `Phone: ${form.phone}`,
       form.service && `Service: ${form.service}`,
+      date && `Date: ${format(date, "EEEE, d MMMM yyyy")}`,
+      form.time && `Time: ${form.time}`,
       ``,
       form.message,
     ].filter(Boolean);
     const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(lines.join("\n"))}`;
     window.open(url, "_blank", "noopener,noreferrer");
     toast.success("Opening WhatsApp to send your booking…");
-    setForm({ name: "", email: "", phone: "", service: "", message: "" });
+    setForm({ name: "", email: "", phone: "", service: "", time: "", message: "" });
+    setDate(undefined);
   };
 
   return (
@@ -437,6 +446,70 @@ const Index = () => {
                                 {s.title}
                               </SelectItem>
                             ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                    <div className="grid sm:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="date">Preferred Date</Label>
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <Button
+                              id="date"
+                              type="button"
+                              variant="outline"
+                              className={cn(
+                                "w-full justify-start text-left font-normal",
+                                !date && "text-muted-foreground"
+                              )}
+                            >
+                              <CalendarIcon className="mr-2 h-4 w-4" />
+                              {date ? format(date, "PPP") : <span>Pick a date</span>}
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-auto p-0" align="start">
+                            <Calendar
+                              mode="single"
+                              selected={date}
+                              onSelect={setDate}
+                              disabled={(d) => {
+                                const today = new Date();
+                                today.setHours(0, 0, 0, 0);
+                                if (d < today) return true;
+                                const day = d.getDay();
+                                // Sunday = 0, Tuesday = 2 are closed
+                                return day === 0 || day === 2;
+                              }}
+                              initialFocus
+                              className={cn("p-3 pointer-events-auto")}
+                            />
+                          </PopoverContent>
+                        </Popover>
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="time">Preferred Time</Label>
+                        <Select
+                          value={form.time}
+                          onValueChange={(v) => setForm({ ...form, time: v })}
+                        >
+                          <SelectTrigger id="time">
+                            <SelectValue placeholder="Choose a time" />
+                          </SelectTrigger>
+                          <SelectContent className="max-h-64">
+                            {Array.from({ length: 19 }).map((_, i) => {
+                              const totalMin = 9 * 60 + i * 30;
+                              const h = Math.floor(totalMin / 60);
+                              const m = totalMin % 60;
+                              const label = `${h.toString().padStart(2, "0")}:${m
+                                .toString()
+                                .padStart(2, "0")}`;
+                              return (
+                                <SelectItem key={label} value={label}>
+                                  {label}
+                                </SelectItem>
+                              );
+                            })}
                           </SelectContent>
                         </Select>
                       </div>
