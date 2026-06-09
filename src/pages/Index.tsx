@@ -306,7 +306,7 @@ const Index = () => {
           </div>
 
           <Carousel
-            opts={{ align: "start", loop: true, duration: 60 }}
+            opts={{ align: "start", loop: true, duration: 60, dragFree: true }}
             plugins={[
               Autoplay({
                 delay: 2200,
@@ -316,19 +316,20 @@ const Index = () => {
             ]}
             className="max-w-5xl mx-auto"
           >
-            <CarouselContent>
-              {workGallery.map((img) => (
+            <CarouselContent className="-ml-4">
+              {workGallery.map((img, i) => (
                 <CarouselItem
                   key={img.src}
-                  className="basis-full sm:basis-1/2 lg:basis-1/3"
+                  className="pl-4 basis-full sm:basis-1/2 lg:basis-1/3"
                 >
-                  <div className="aspect-[3/4] overflow-hidden rounded-lg bg-secondary shadow-md">
+                  <div className="group aspect-[3/4] overflow-hidden rounded-xl bg-secondary shadow-md hover:shadow-2xl transition-shadow duration-500 relative">
                     <img
                       src={img.src}
                       alt={img.alt}
-                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                      className="w-full h-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-110"
                       loading="lazy"
                     />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   </div>
                 </CarouselItem>
               ))}
@@ -336,6 +337,7 @@ const Index = () => {
             <CarouselPrevious className="hidden md:flex" />
             <CarouselNext className="hidden md:flex" />
           </Carousel>
+
         </div>
       </section>
 
