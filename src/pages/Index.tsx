@@ -175,35 +175,42 @@ const Index = () => {
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {services.map((s) => (
-              <Card
-                key={s.title}
-                className="border-border/60 bg-card shadow-sm hover:shadow-lg transition-shadow"
-              >
-                <CardContent className="p-7">
-                  <div className="flex items-start justify-between mb-6">
-                    <div className="h-12 w-12 rounded-full bg-gold/10 flex items-center justify-center">
-                      <s.icon className="h-5 w-5 text-gold" />
-                    </div>
-                    <span className="text-sm text-gold font-medium">{s.price}</span>
-                  </div>
-                  <h3 className="font-serif-display text-xl mb-3">{s.title}</h3>
-                  <p className="text-muted-foreground text-sm leading-relaxed mb-6">
-                    {s.desc}
-                  </p>
-                  <button
-                    onClick={() => {
-                      setForm((f) => ({ ...f, service: s.title }));
-                      scrollTo("contact");
-                    }}
-                    className="inline-flex items-center gap-2 text-gold font-medium tracking-wide hover:gap-3 transition-all"
-                  >
-                    Book Now <ArrowRight className="h-4 w-4" />
-                  </button>
-                </CardContent>
-              </Card>
-            ))}
+            {services.map((s, i) => {
+              const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+                `Hi KC Beautique, I'd like to book a *${s.title}* appointment. Please share availability.`
+              )}`;
+              return (
+                <a
+                  key={s.title}
+                  href={waUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ animationDelay: `${i * 120}ms` }}
+                  className="group block animate-fade-in"
+                >
+                  <Card className="relative overflow-hidden border-border/60 bg-card shadow-sm transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl hover:border-gold/40 h-full">
+                    <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-gold/5 via-transparent to-gold/10" />
+                    <div className="pointer-events-none absolute -top-24 -right-24 h-48 w-48 rounded-full bg-gold/10 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                    <CardContent className="relative p-7">
+                      <div className="mb-6">
+                        <div className="h-12 w-12 rounded-full bg-gold/10 flex items-center justify-center transition-transform duration-500 group-hover:scale-110 group-hover:rotate-[8deg]">
+                          <s.icon className="h-5 w-5 text-gold" />
+                        </div>
+                      </div>
+                      <h3 className="font-serif-display text-xl mb-3">{s.title}</h3>
+                      <p className="text-muted-foreground text-sm leading-relaxed mb-6">
+                        {s.desc}
+                      </p>
+                      <span className="inline-flex items-center gap-2 text-gold font-medium tracking-wide transition-all group-hover:gap-3">
+                        Book on WhatsApp <ArrowRight className="h-4 w-4" />
+                      </span>
+                    </CardContent>
+                  </Card>
+                </a>
+              );
+            })}
           </div>
+
         </div>
       </section>
 
@@ -223,17 +230,19 @@ const Index = () => {
           </div>
 
           <div className="grid sm:grid-cols-2 gap-6 max-w-5xl mx-auto">
-            {products.map((p) => (
+            {products.map((p, i) => (
               <Card
                 key={p.id}
-                className="overflow-hidden border-border/60 bg-card shadow-sm hover:shadow-xl transition-shadow"
+                style={{ animationDelay: `${i * 150}ms` }}
+                className="group overflow-hidden border-border/60 bg-card shadow-sm transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl hover:border-gold/40 animate-fade-in"
               >
-                <div className="aspect-[4/3] overflow-hidden bg-secondary">
+                <div className="aspect-[4/3] overflow-hidden bg-secondary relative">
                   <img
                     src={p.image}
                     alt={p.title}
-                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                    className="w-full h-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-110"
                   />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 </div>
                 <CardContent className="p-6">
                   <p className="text-gold tracking-[0.2em] text-xs font-semibold mb-3 uppercase">
@@ -258,7 +267,7 @@ const Index = () => {
                     </div>
                   </div>
                   <Button
-                    className="w-full bg-gold hover:bg-gold/90 text-primary-foreground"
+                    className="w-full bg-gold hover:bg-gold/90 text-primary-foreground transition-transform hover:scale-[1.02]"
                     onClick={() => {
                       add({
                         id: p.id,
@@ -276,6 +285,7 @@ const Index = () => {
               </Card>
             ))}
           </div>
+
         </div>
       </section>
 
@@ -296,7 +306,7 @@ const Index = () => {
           </div>
 
           <Carousel
-            opts={{ align: "start", loop: true, duration: 60 }}
+            opts={{ align: "start", loop: true, duration: 60, dragFree: true }}
             plugins={[
               Autoplay({
                 delay: 2200,
@@ -306,19 +316,20 @@ const Index = () => {
             ]}
             className="max-w-5xl mx-auto"
           >
-            <CarouselContent>
-              {workGallery.map((img) => (
+            <CarouselContent className="-ml-4">
+              {workGallery.map((img, i) => (
                 <CarouselItem
                   key={img.src}
-                  className="basis-full sm:basis-1/2 lg:basis-1/3"
+                  className="pl-4 basis-full sm:basis-1/2 lg:basis-1/3"
                 >
-                  <div className="aspect-[3/4] overflow-hidden rounded-lg bg-secondary shadow-md">
+                  <div className="group aspect-[3/4] overflow-hidden rounded-xl bg-secondary shadow-md hover:shadow-2xl transition-shadow duration-500 relative">
                     <img
                       src={img.src}
                       alt={img.alt}
-                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                      className="w-full h-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-110"
                       loading="lazy"
                     />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   </div>
                 </CarouselItem>
               ))}
@@ -326,6 +337,7 @@ const Index = () => {
             <CarouselPrevious className="hidden md:flex" />
             <CarouselNext className="hidden md:flex" />
           </Carousel>
+
         </div>
       </section>
 

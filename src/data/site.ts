@@ -42,7 +42,7 @@ export const products = [
     id: "shea-125",
     image: productFood,
     category: "Hair Care",
-    title: "Shea Butter",
+    title: "Hair Butter",
     price: 100,
     size: "125ml",
     desc: "Shea Butter & Coconut Oil treatment to nourish and protect hair.",
