@@ -117,7 +117,7 @@ const CartDrawer = () => {
               size="lg"
               className="w-full bg-gold hover:bg-gold/90 text-primary-foreground"
             >
-              Checkout
+              Checkout via WhatsApp
             </Button>
           </div>
         )}
