@@ -230,17 +230,19 @@ const Index = () => {
           </div>
 
           <div className="grid sm:grid-cols-2 gap-6 max-w-5xl mx-auto">
-            {products.map((p) => (
+            {products.map((p, i) => (
               <Card
                 key={p.id}
-                className="overflow-hidden border-border/60 bg-card shadow-sm hover:shadow-xl transition-shadow"
+                style={{ animationDelay: `${i * 150}ms` }}
+                className="group overflow-hidden border-border/60 bg-card shadow-sm transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl hover:border-gold/40 animate-fade-in"
               >
-                <div className="aspect-[4/3] overflow-hidden bg-secondary">
+                <div className="aspect-[4/3] overflow-hidden bg-secondary relative">
                   <img
                     src={p.image}
                     alt={p.title}
-                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                    className="w-full h-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-110"
                   />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 </div>
                 <CardContent className="p-6">
                   <p className="text-gold tracking-[0.2em] text-xs font-semibold mb-3 uppercase">
@@ -265,7 +267,7 @@ const Index = () => {
                     </div>
                   </div>
                   <Button
-                    className="w-full bg-gold hover:bg-gold/90 text-primary-foreground"
+                    className="w-full bg-gold hover:bg-gold/90 text-primary-foreground transition-transform hover:scale-[1.02]"
                     onClick={() => {
                       add({
                         id: p.id,
@@ -283,6 +285,7 @@ const Index = () => {
               </Card>
             ))}
           </div>
+
         </div>
       </section>
 
