@@ -175,35 +175,42 @@ const Index = () => {
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {services.map((s) => (
-              <Card
-                key={s.title}
-                className="border-border/60 bg-card shadow-sm hover:shadow-lg transition-shadow"
-              >
-                <CardContent className="p-7">
-                  <div className="flex items-start justify-between mb-6">
-                    <div className="h-12 w-12 rounded-full bg-gold/10 flex items-center justify-center">
-                      <s.icon className="h-5 w-5 text-gold" />
-                    </div>
-                    <span className="text-sm text-gold font-medium">{s.price}</span>
-                  </div>
-                  <h3 className="font-serif-display text-xl mb-3">{s.title}</h3>
-                  <p className="text-muted-foreground text-sm leading-relaxed mb-6">
-                    {s.desc}
-                  </p>
-                  <button
-                    onClick={() => {
-                      setForm((f) => ({ ...f, service: s.title }));
-                      scrollTo("contact");
-                    }}
-                    className="inline-flex items-center gap-2 text-gold font-medium tracking-wide hover:gap-3 transition-all"
-                  >
-                    Book Now <ArrowRight className="h-4 w-4" />
-                  </button>
-                </CardContent>
-              </Card>
-            ))}
+            {services.map((s, i) => {
+              const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+                `Hi KC Beautique, I'd like to book a *${s.title}* appointment. Please share availability.`
+              )}`;
+              return (
+                <a
+                  key={s.title}
+                  href={waUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ animationDelay: `${i * 120}ms` }}
+                  className="group block animate-fade-in"
+                >
+                  <Card className="relative overflow-hidden border-border/60 bg-card shadow-sm transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl hover:border-gold/40 h-full">
+                    <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-gold/5 via-transparent to-gold/10" />
+                    <div className="pointer-events-none absolute -top-24 -right-24 h-48 w-48 rounded-full bg-gold/10 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                    <CardContent className="relative p-7">
+                      <div className="mb-6">
+                        <div className="h-12 w-12 rounded-full bg-gold/10 flex items-center justify-center transition-transform duration-500 group-hover:scale-110 group-hover:rotate-[8deg]">
+                          <s.icon className="h-5 w-5 text-gold" />
+                        </div>
+                      </div>
+                      <h3 className="font-serif-display text-xl mb-3">{s.title}</h3>
+                      <p className="text-muted-foreground text-sm leading-relaxed mb-6">
+                        {s.desc}
+                      </p>
+                      <span className="inline-flex items-center gap-2 text-gold font-medium tracking-wide transition-all group-hover:gap-3">
+                        Book on WhatsApp <ArrowRight className="h-4 w-4" />
+                      </span>
+                    </CardContent>
+                  </Card>
+                </a>
+              );
+            })}
           </div>
+
         </div>
       </section>
 
