@@ -14,18 +14,17 @@ const sections = [
 const socials = [
   {
     name: "Instagram",
-    href: "https://www.instagram.com/kcbeautique",
+    href: "https://www.instagram.com/_kc_beautique_",
     icon: Instagram,
   },
   {
     name: "Facebook",
-    href: "https://www.facebook.com/kcbeautique",
+    href: "https://www.facebook.com/share/1ChxSdkaNs/",
     icon: Facebook,
   },
   {
     name: "TikTok",
-    href: "https://www.tiktok.com/@kcbeautique",
-    // Inline TikTok glyph (lucide has no TikTok icon)
+    href: "https://www.tiktok.com/@kc_beautique_",
     icon: (props: React.SVGProps<SVGSVGElement>) => (
       <svg
         viewBox="0 0 24 24"
