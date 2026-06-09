@@ -10,11 +10,28 @@ import { ShoppingBag, Minus, Plus, Trash2 } from "lucide-react";
 import { useCart } from "@/hooks/use-cart";
 import { toast } from "sonner";
 
+const WHATSAPP_NUMBER = "27815955420";
+
 const CartDrawer = () => {
   const { items, count, total, setQuantity, remove, clear } = useCart();
 
   const checkout = () => {
-    toast.success("Order received! We'll WhatsApp you to confirm payment & delivery.");
+    const lines = [
+      "*New Order — KC Beautique*",
+      "",
+      ...items.map(
+        (i) => `• ${i.title} (${i.size}) ×${i.quantity} — R${i.price * i.quantity}`
+      ),
+      "",
+      `Total: R${total}`,
+      "",
+      "Please confirm payment & delivery details.",
+    ];
+    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+      lines.join("\n")
+    )}`;
+    window.open(url, "_blank", "noopener,noreferrer");
+    toast.success("Opening WhatsApp to confirm your order…");
     clear();
   };
 
