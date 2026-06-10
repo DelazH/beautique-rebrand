@@ -35,6 +35,8 @@ import work5 from "@/assets/work-5.jpg";
 import work6 from "@/assets/work-6.jpg";
 import work7 from "@/assets/work-7.jpg";
 import { services, products } from "@/data/site";
+import { supabase } from "@/integrations/supabase/client";
+import { useCart } from "@/hooks/use-cart";
 
 const workGallery = [
   { src: work1, alt: "Black & gold nail art" },
