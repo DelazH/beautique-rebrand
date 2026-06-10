@@ -96,28 +96,13 @@ const Index = () => {
   });
   const [date, setDate] = useState<Date | undefined>();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.name || !form.message) {
       toast.error("Please fill in your name and message.");
       return;
     }
     const dateStr = date ? format(date, "EEEE, d MMMM yyyy") : "";
-    try {
-      await supabase.functions.invoke("log-submission", {
-        body: {
-          type: "booking",
-          name: form.name,
-          email: form.email,
-          phone: form.phone,
-          service: form.service,
-          date: dateStr,
-          time: form.time,
-        },
-      });
-    } catch (err) {
-      console.error("Sheets log failed", err);
-    }
     const lines = [
       `*New Booking Request — KC Beautique*`,
       `Name: ${form.name}`,
@@ -130,8 +115,26 @@ const Index = () => {
       form.message,
     ].filter(Boolean);
     const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(lines.join("\n"))}`;
-    window.open(url, "_blank", "noopener,noreferrer");
-    toast.success("Booking saved & opening WhatsApp…");
+
+    // Fire-and-forget log to Sheets (don't await — preserves iOS user gesture for WhatsApp)
+    supabase.functions
+      .invoke("log-submission", {
+        body: {
+          type: "booking",
+          name: form.name,
+          email: form.email,
+          phone: form.phone,
+          service: form.service,
+          date: dateStr,
+          time: form.time,
+          message: form.message,
+        },
+      })
+      .catch((err) => console.error("Sheets log failed", err));
+
+    // Use top-level navigation so iOS opens the WhatsApp app reliably
+    window.location.href = url;
+    toast.success("Opening WhatsApp…");
     setForm({ name: "", email: "", phone: "", service: "", time: "", message: "" });
     setDate(undefined);
   };
