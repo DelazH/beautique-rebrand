@@ -17,33 +17,27 @@ const WHATSAPP_NUMBER = "27815955420";
 const CartDrawer = () => {
   const { items, count, total, setQuantity, remove, clear } = useCart();
 
-  const checkout = async () => {
+  const checkout = () => {
     const itemsText = items
       .map((i) => `${i.title} (${i.size}) x${i.quantity} - R${i.price * i.quantity}`)
       .join("; ");
-    try {
-      await supabase.functions.invoke("log-submission", {
+
+    const productNames = items
+      .map((i) => (i.quantity > 1 ? `${i.title} ×${i.quantity}` : i.title))
+      .join(", ");
+    const message = `Hi KC Beautique, I booked '${productNames}'. Please send payment details. Total: R${total}`;
+    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+
+    // Fire-and-forget log — don't await so iOS keeps the user gesture for WhatsApp
+    supabase.functions
+      .invoke("log-submission", {
         body: { type: "order", items: itemsText, total },
-      });
-    } catch (err) {
-      console.error("Sheets log failed", err);
-    }
-    const lines = [
-      "*New Order — KC Beautique*",
-      "",
-      ...items.map(
-        (i) => `• ${i.title} (${i.size}) ×${i.quantity} — R${i.price * i.quantity}`
-      ),
-      "",
-      `Total: R${total}`,
-      "",
-      "Please confirm payment & delivery details.",
-    ];
-    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
-      lines.join("\n")
-    )}`;
-    window.open(url, "_blank", "noopener,noreferrer");
-    toast.success("Order saved & opening WhatsApp…");
+      })
+      .catch((err) => console.error("Sheets log failed", err));
+
+    // Top-level navigation opens the WhatsApp app reliably on iPhone
+    window.location.href = url;
+    toast.success("Opening WhatsApp…");
     clear();
   };
 
