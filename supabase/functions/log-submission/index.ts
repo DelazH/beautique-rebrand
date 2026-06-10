@@ -7,14 +7,14 @@ const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
 const GOOGLE_SHEETS_API_KEY = Deno.env.get('GOOGLE_SHEETS_API_KEY');
 
 type Body =
-  | { type: 'booking'; name: string; email?: string; phone?: string; service?: string; date?: string; time?: string }
+  | { type: 'booking'; name: string; email?: string; phone?: string; service?: string; date?: string; time?: string; message?: string }
   | { type: 'order'; customer?: string; phone?: string; items: string; total: number }
   | { type: 'contact'; name: string; email?: string; message: string };
 
 function rowFor(body: Body): { sheet: string; row: (string | number)[] } {
   const ts = new Date().toISOString();
   if (body.type === 'booking') {
-    return { sheet: 'Bookings', row: [ts, body.name, body.email ?? '', body.phone ?? '', body.service ?? '', body.date ?? '', body.time ?? ''] };
+    return { sheet: 'Bookings', row: [ts, body.name, body.email ?? '', body.phone ?? '', body.service ?? '', body.date ?? '', body.time ?? '', body.message ?? ''] };
   }
   if (body.type === 'order') {
     return { sheet: 'Orders', row: [ts, body.customer ?? '', body.phone ?? '', body.items, body.total] };
