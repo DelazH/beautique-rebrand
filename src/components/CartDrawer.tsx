@@ -10,12 +10,24 @@ import { ShoppingBag, Minus, Plus, Trash2 } from "lucide-react";
 import { useCart } from "@/hooks/use-cart";
 import { toast } from "sonner";
 
+import { supabase } from "@/integrations/supabase/client";
+
 const WHATSAPP_NUMBER = "27815955420";
 
 const CartDrawer = () => {
   const { items, count, total, setQuantity, remove, clear } = useCart();
 
-  const checkout = () => {
+  const checkout = async () => {
+    const itemsText = items
+      .map((i) => `${i.title} (${i.size}) x${i.quantity} - R${i.price * i.quantity}`)
+      .join("; ");
+    try {
+      await supabase.functions.invoke("log-submission", {
+        body: { type: "order", items: itemsText, total },
+      });
+    } catch (err) {
+      console.error("Sheets log failed", err);
+    }
     const lines = [
       "*New Order — KC Beautique*",
       "",
@@ -31,7 +43,7 @@ const CartDrawer = () => {
       lines.join("\n")
     )}`;
     window.open(url, "_blank", "noopener,noreferrer");
-    toast.success("Opening WhatsApp to confirm your order…");
+    toast.success("Order saved & opening WhatsApp…");
     clear();
   };
 

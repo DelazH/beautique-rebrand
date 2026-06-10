@@ -35,6 +35,7 @@ import work5 from "@/assets/work-5.jpg";
 import work6 from "@/assets/work-6.jpg";
 import work7 from "@/assets/work-7.jpg";
 import { services, products } from "@/data/site";
+import { supabase } from "@/integrations/supabase/client";
 
 const workGallery = [
   { src: work1, alt: "Black & gold nail art" },
@@ -95,11 +96,27 @@ const Index = () => {
   });
   const [date, setDate] = useState<Date | undefined>();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.name || !form.message) {
       toast.error("Please fill in your name and message.");
       return;
+    }
+    const dateStr = date ? format(date, "EEEE, d MMMM yyyy") : "";
+    try {
+      await supabase.functions.invoke("log-submission", {
+        body: {
+          type: "booking",
+          name: form.name,
+          email: form.email,
+          phone: form.phone,
+          service: form.service,
+          date: dateStr,
+          time: form.time,
+        },
+      });
+    } catch (err) {
+      console.error("Sheets log failed", err);
     }
     const lines = [
       `*New Booking Request — KC Beautique*`,
@@ -107,14 +124,14 @@ const Index = () => {
       form.email && `Email: ${form.email}`,
       form.phone && `Phone: ${form.phone}`,
       form.service && `Service: ${form.service}`,
-      date && `Date: ${format(date, "EEEE, d MMMM yyyy")}`,
+      dateStr && `Date: ${dateStr}`,
       form.time && `Time: ${form.time}`,
       ``,
       form.message,
     ].filter(Boolean);
     const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(lines.join("\n"))}`;
     window.open(url, "_blank", "noopener,noreferrer");
-    toast.success("Opening WhatsApp to send your booking…");
+    toast.success("Booking saved & opening WhatsApp…");
     setForm({ name: "", email: "", phone: "", service: "", time: "", message: "" });
     setDate(undefined);
   };
