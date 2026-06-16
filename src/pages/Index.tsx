@@ -256,13 +256,14 @@ const Index = () => {
                 style={{ animationDelay: `${i * 150}ms` }}
                 className="group overflow-hidden border-border/60 bg-card shadow-sm transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl hover:border-gold/40 animate-fade-in"
               >
-                <div className="aspect-[4/3] overflow-hidden bg-secondary relative">
+                <div className="aspect-[3/4] overflow-hidden bg-secondary relative">
                   <img
                     src={p.image}
                     alt={p.title}
-                    className="w-full h-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-110"
+                    className="w-full h-full object-contain bg-[#f5ecd9] transition-all duration-[1200ms] ease-out group-hover:scale-105 group-hover:rotate-1"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <div className="absolute inset-0 ring-0 group-hover:ring-1 ring-gold/40 transition-all duration-500" />
                 </div>
                 <CardContent className="p-6">
                   <p className="text-gold tracking-[0.2em] text-xs font-semibold mb-3 uppercase">
